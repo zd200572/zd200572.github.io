@@ -47,6 +47,8 @@ M
 MGMTPRLGLESLLE
 MTPRLGLESLLE
 '''
+
+'''python
 seq = 'AGCCATGTAGCTAACTCAGGTTACATGGGGATGACCCCGCGACTTGGATTAGAGTCTCTTTTGGAATAAGCCTGAATGATCCGAGTAGCATCTCAG'
 
 def get_rna_dict():
@@ -97,3 +99,4 @@ mrna1, mrna2 = transcipts(seq)
 print(mrna2 + '\n' )
 list = find_orf(mrna1) + find_orf(mrna2)
 print(list)
+'''
