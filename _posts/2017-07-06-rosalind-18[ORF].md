@@ -13,16 +13,14 @@ tags:
     - Python3
 ---
 
-> 欢迎到我的博客
+#欢迎到我的博客#
 
 
 最近已经基本上学完了《Python生物信息学数据管理（Managing your Biological Data with Python)》，之前学了一点rosalind（生物信息学练习python的好网站。http://rosalind.info/problems/locations/）的内容，现在继续学习下去。
 
 这是第18题的解答。
 
-
-
-
+'
 ================================
 Open Reading Frames
 ================================
@@ -46,6 +44,6 @@ MLLGSFRLIPKETLIQVAGSSPCNLS
 M
 MGMTPRLGLESLLE
 MTPRLGLESLLE
-
+'
 
 [https://github.com/zd200572/rosalind16-/blob/master/18-ORF.py](https://github.com/zd200572/rosalind16-/blob/master/18-ORF.py)
