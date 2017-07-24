@@ -39,7 +39,7 @@ Lenovo-ThinkPad-E431
 
 1）Miniconda安装
 
- ``wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh`
+ `wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh`
 
 `bash Miniconda3-latest-Linux-x86_64.sh`
 
@@ -47,7 +47,7 @@ Lenovo-ThinkPad-E431
 
 2）sratoolkit
 
-conda install -c jfear sratoolkit  
+`conda install -c jfear sratoolkit  `
 
 3）fastqc
 
@@ -107,6 +107,20 @@ BioLinux自带了，升级一下到3.4.1
 `ls *fastq |while read id; do fastqc $id;done`
 
 ## 3、了解fastq测序数据（fastqc质量控制学习） ##
+>
+1.fastqc
+`zcat SRR3589956_1.fastq.gz | fastqc -t 4 stdin
+fastqc SRR3589956_1.fastq.gz`
+`#t 线程，每个250M内存`
+
+2.multiQC
+`conda install multiqcmultiqc `
+`# 先获取QC结果`
+
+`ls *gz | while read id; do fastqc -t 4 $id; done`
+`# multiqc`
+`multiqc *fastqc.zip --pdf`
+
 ![](http://osnq2ssd7.bkt.clouddn.com/rnaseq1.png)
 
 ![](http://osnq2ssd7.bkt.clouddn.com/rnaseq2.jpg)
@@ -147,7 +161,9 @@ BioLinux自带了，升级一下到3.4.1
 >
 转录组入门(1)：计算机资源的准备
 最好是有mac或者linux系统，8G+的内存，500G的存储即可。
+
 如果你是Windows，那么安装必须安装 git,notepad++,everything，还有虚拟机，在虚拟机里面安装linux，最好是ubuntu。
+
 需要安装的软件包括 sratoolkit,fastqc,hisats,samtools,htseq-count,R,Rstudio 
 >
 软件安装的代码，在生信技能树公众号后台回复老司机即可拿到。
