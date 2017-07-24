@@ -33,6 +33,7 @@ Lenovo-ThinkPad-E431
     核心/线程数 双核心/四线程
     制程工艺 22nm
     内存容量 12GB（4GB×1 + 8GB×1）
+
 ### 1.2 软件安装
 
 有简单的不必去重新编译代码了，bioconda几个命令解决，可能软件依赖会有点问题。
@@ -114,11 +115,14 @@ fastqc SRR3589956_1.fastq.gz`
 `#t 线程，每个250M内存`
 
 2.multiQC
+
 `conda install multiqcmultiqc `
 `# 先获取QC结果`
 
 `ls *gz | while read id; do fastqc -t 4 $id; done`
+
 `# multiqc`
+
 `multiqc *fastqc.zip --pdf`
 
 ![](http://osnq2ssd7.bkt.clouddn.com/rnaseq1.png)
