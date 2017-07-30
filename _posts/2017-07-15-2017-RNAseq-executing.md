@@ -20,6 +20,10 @@ tags:
 
 系统：BioLinux8（ubuntu14.04.2-x64）
 
+吐槽个一下这个系统，普通帐户竟然环境变量错误（source ~/.bashrc)，对我等小白来说实在头大，只有用root用户运行了。
+
+>  后来通过百度错误问题发现，这个系统用的是zsh，所以更新环境变量的代码是 source ~/.zshrc 这样就可以了。
+
 电脑配置：
 
 Lenovo-ThinkPad-E431
@@ -61,6 +65,10 @@ Lenovo-ThinkPad-E431
 `conda install hisat2`
 
 `hisat2 -h  #测试`
+
+这有个小插曲，提示hisat2依赖于python3.5, 而我装的是3.6，于是百度得知用conda安装3.5版本的：
+
+`conda install python=3.5`
 
 5）samtools
 
@@ -105,18 +113,17 @@ BioLinux自带了，升级一下到3.4.1
 
 `ls *sra |while read id; do fastq-dump --gzip --split-3 $id;done`
 
-`ls *fastq |while read id; do fastqc $id;done`
-
+看到大神用的.gz格式才发现太省空间了，至少省了一半以上，膜拜！
 ## 3、了解fastq测序数据（fastqc质量控制学习） ##
->
 1.fastqc
-`zcat SRR3589956_1.fastq.gz | fastqc -t 4 stdin
-fastqc SRR3589956_1.fastq.gz`
+
+`zcat SRR3589956_1.fastq.gz | fastqc -t 4 stdin`
+`fastqc SRR3589956_1.fastq.gz`
 `#t 线程，每个250M内存`
 
 2.multiQC
 
-`conda install multiqcmultiqc `
+`conda install multiqc `
 `# 先获取QC结果`
 
 `ls *gz | while read id; do fastqc -t 4 $id; done`
@@ -124,6 +131,8 @@ fastqc SRR3589956_1.fastq.gz`
 `# multiqc`
 
 `multiqc *fastqc.zip --pdf`
+
+学习笔记是纸质版拍照的，哈哈。
 
 ![](http://osnq2ssd7.bkt.clouddn.com/rnaseq1.png)
 
@@ -142,6 +151,15 @@ fastqc SRR3589956_1.fastq.gz`
 
 2）下载基因组注释gtf文件
 
+>GTF和GFF之间的区别：
+>
+>数据结构：都是由9列构成，分别是reference sequence name; annotation source; feature type; start coordinate; end coordinate; score; strand; frame; attributes.前8列都是相同的，第9列不同。
+
+>
+>**GFF第9列**：都是以键值对的形式，键值之间用“***=***”连接，不同属性之间用“；”分隔，都是以ID这个属性开始。下图中有两个ID，说明是不同的序列。
+>
+>**GTF第9列**：同样以键值对的形式，键值之间是以**空格**区分，值用双引号括起来；不同属性之间用“；”分隔；开头必须是<u>gene_id, transcipt_id</u>两个属性。
+
 ` wget ftp://ftp.sanger.ac.uk/pub/gencode/Gencode_human/release_26/GRCh37_mapping/gencode.v26lift37.annotation.gtf.gz]ftp://ftp.sanger.ac.uk/pub/genco ... 7.annotation.gtf.gz`
 
 3)下载IGV(Integrative Genomics Viewer)
@@ -159,104 +177,252 @@ fastqc SRR3589956_1.fastq.gz`
 
 [https://mp.weixin.qq.com/s/Q7pqycmQH58xU6hw_LECWA](https://mp.weixin.qq.com/s/Q7pqycmQH58xU6hw_LECWA)
 
+## 5、序列比对
 
->
-1、[http://www.biotrainee.com/forum.php?mod=viewthread&tid=1750#lastpost](http://www.biotrainee.com/forum.php?mod=viewthread&tid=1750#lastpost)#jimmy的导航贴
->
-转录组入门(1)：计算机资源的准备
-最好是有mac或者linux系统，8G+的内存，500G的存储即可。
+5.1 下载index
 
-如果你是Windows，那么安装必须安装 git,notepad++,everything，还有虚拟机，在虚拟机里面安装linux，最好是ubuntu。
+`cd referece && mkdir index && cd index `
+`wget ftp://ftp.ccb.jhu.edu/pub/infphilo/hisat2/data/hg19.tar.gz`
+`tar -zxvf hg19.tar.gz`
 
-需要安装的软件包括 sratoolkit,fastqc,hisats,samtools,htseq-count,R,Rstudio 
+5.2  比对
+
+`mkdir -p RNA-Seq/aligned`
+`for i in seq ‘56 58’ `
+`do`
+
+```shell
+hisat2 -t -x reference/index/hg19/genome -1 RNA-Seq/SRR35899${i}_1.fastq.gz -2 SRR35899${i}_2.fastq.gz -S RNA-Seq/aligned/SRR35899${i}.sam 
+```
+`done`
+
+5.3 HISAT2输出结果
+
+
+
+5.4 格式转换，排序，索引
+
+```shell
+for i in `seq 56 58`
+do
+    samtools view -S SRR35899${i}.sam -b > SRR35899${i}.bam
+    samtools sort SRR35899${i}.bam SRR35899${i}_sorted.bam 
+    #这里我用的是0.1.19版本，不用加参 -o 	
+    #ps:我加了-o之后重定向输出结果有5个G之工巨，xshell直接死机，直接运行，电脑终端一直不停跳乱码的东西。
+    samtools index SRR35899${i}_sorted.bam
+done
+```
+
+判断sam排序两种方式的不同：
+
+```shell
+head -100 SRR3589957.sam > test.sam
+samtools view -b  test.sam > test.bam
+samtools view test.bam | head
+```
+
+默认排序
+
+```shell
+samtools sort test.bam default
+samtools view default.bam | head
+```
+
+Sort alignments by leftmost coordinates, or by read name when -n is used
+
+```
+samtools sort -n test.bam sort_left
+samtools view sort_left.bam | head
+```
+
+5.5 samtools view
+
+**提取**1号染色体1234-123456区域的比对read
+
+`samtools view SRR3589957_sorted.bam chr1:1234-123456 | head	`
+
+flagstat看下总体情况
+
+```shell
+samtools flagstat SRR3589957_sorted.bam
+```
+
+用samtools筛选恰好配对的read,就需要用0x10
+
+```shell
+samtools view -b -f 0x10 SRR3589957_sorted.bam chr1:1234-123456  > flag.bam
+samtools flagstat flag.bam
+```
+
+5.6 比对质控(QC)
+
+```python
+# Python2.7环境下
+pip install RSeQC
+```
+
+对bam文件进行统计分析(70~90的比对率要求)
+
+```python
+bam_stat.py -i SRR3589956_sorted.bam
+```
+
+基因组覆盖率的QC
+
+需要提供bed文件，可以直接RSeQC的网站下载(看文件只有1M多，就没有考虑转换):
+
+`wget https://downloads.sourceforge.net/project/rseqc/BED/Human_Ho<br>mo_sapiens/hg19_RefSeq.bed.gz`
+
+```python
+read_distribution.py -i RNA-Seq/aligned/SRR3589956_sorted.bam -r reference/hg19_RefSeq.bed
+```
+
+5.7 IGV查看
+
+载入参考序列，注释和BAM文件
+
+# 6 reads计数                
+
+```shell
+# 安装
+conda install htseq
+# 使用
+# htseq-count [options] <alignment_file> <gtf_file>
+htseq-count -r pos -f bam RNA-Seq/aligned/SRR3589957_sorted.bam reference/gencode.v26lift37.annotation.sorted.gtf > SRR3589957.count
+```
+
+循环处理多个BAM文件：
+
+```shell
+mkdir -p RNA-Seq/matrix/
+for i in `seq 56 58`
+do
+    htseq-count -s no -r pos -f bam RNA-Seq/aligned/SRR35899${i}_sorted.bam reference/gencode.v26lift37.annotation.sorted.gtf > RNA-Seq/matrix/SRR35899${i}.count 2> RNA-Seq/matrix/SRR35899${i}.log
+done
+```
+
+## 合并表达矩阵
+
+在生信媛的python脚本上略做了修改
+
+```python
+!/usr/bin/python3
+def combine_count(count_list):
+  mydict = {}
+  for file in count_list:
+      for line in open(file, 'r'):
+          #print(line)
+          if line.startswith('E'):
+              key,value = line.strip().split('\t')
+              if key in mydict:
+                  mydict[key] = mydict[key] + '\t' + value
+              else:
+                  mydict[key] = value
+
+  sorted_mydict = sorted(mydict)
+  out = open('count_out.txt', 'w')
+
+  for k in sorted_mydict:
+      #print(k, mydict[k])
+      #break
+      out.write(k + '\t' + mydict[k] +'\n')
+    
+    
+count_list = ['SRR3589956.count', 'SRR3589957.count', 'SRR3589958.count']
+
+combine_count(count_list)
+```
+
+## 简单分析(这里由于对R接触还很少，不少命令不明白，只有运行一下试试)
+
+1) 导入数据
+
+```R
+options(stringsAsFactors = FALSE)# import data if sample are small
+control <- read.table("/media/biolinux/LENOVO_imcdul/biodata/SRR3589956.count",sep="\t", col.names = c("gene_id","control"))
+```
+
+2) 数据整合
+
+```R
+# merge data and delete the unuseful row
+raw_count <- merge(merge(control, rep1, by="gene_id"), rep2, by="gene_id")
+raw_count_filt <- raw_count[-1:-5,]
+ENSEMBL <- gsub("(.*?)\\.\\d*?_\\d", "\\1", raw_count_filt$gene_id)
+row.names(raw_count_filt) <- ENSEMBL
+```
+
+3） 总体情况
+
+```R
+summary(raw_count_filt)
+```
+
+4）看几个具体基因
+
+```R
+> GAPDH <- raw_count_filt[rownames(raw_count_filt)=="ENSG00000111640",]
+#EBI上搜索GAPDH找到ID为ENSG00000111640
+> GAPDH
+```
+
+文章研究的AKAP95（ENSG00000105127）的表达量在KD中都降低了
+
+```R
+> AKAP95 <- raw_count_filt[rownames(raw_count_filt)=="ENSG00000105127",]
+> AKAP95
+```
+
+
+
+
+
+参考内容列表：
+
+
+>1、[http://www.biotrainee.com/forum.php?mod=viewthread&tid=1750#lastpost](http://www.biotrainee.com/forum.php?mod=viewthread&tid=1750#lastpost)#jimmy的导航贴
 >
-软件安装的代码，在生信技能树公众号后台回复老司机即可拿到。
-进阶作业，每个软件都收集一个中文教程链接，并自己阅读，发在论坛里面。
+>2、转录组（一）](http://www.biotrainee.com/thread-1800-1-1.html)  ( HOPTOP )  
 >
-目前有5份优秀作业，请大家学习：
+>3、转录组入门(1)](http://www.biotrainee.com/thread-1796-1-1.html)-  (青山屋主)
 >
-[转录组（一）](http://www.biotrainee.com/thread-1800-1-1.html)作业  ( HOPTOP )  
+>4、[转录组入门（1）](http://www.biotrainee.com/thread-1810-1-1.html)Mac上软件准备作业 
 >
-[转录组入门(1)](http://www.biotrainee.com/thread-1796-1-1.html)-作业  (青山屋主)
+>5、[PANDA姐的转录组入门(1)](http://www.biotrainee.com/thread-1847-1-1.html)：计算机资源的准备 
 >
-[转录组入门（1）](http://www.biotrainee.com/thread-1810-1-1.html)Mac上软件准备作业 
+>6、[转录组作业（一）](http://www.biotrainee.com/thread-1850-1-1.html)：来自零基础的小白
 >
-[PANDA姐的转录组入门(1)](http://www.biotrainee.com/thread-1847-1-1.html)：计算机资源的准备 
+>7、[转录组入门(2)：读文章拿到测序数据](http://www.biotrainee.com/thread-1743-1-1.html)
 >
-[转录组作业（一）](http://www.biotrainee.com/thread-1850-1-1.html)：来自零基础的小白
+>[转录组入门（二） New(HOPTOP)
 >
-[转录组入门(2)：读文章拿到测序数据](http://www.biotrainee.com/thread-1743-1-1.html)
+>8、[转录组入门(2)](http://www.biotrainee.com/thread-1884-1-1.html)-（青山屋主)
 >
-本系列课程学习的文章是：AKAP95 regulates splicing through scaffolding RNAs and RNA processing factors. Nat Commun 2016 Nov 8;7:13347. PMID: 27824034 很容易在文章里面找到数据地址GSE81916 这样就可以下载sra文件
+>9、[PANDA姐的转录组入门(2)：读文章拿到测序数据](http://www.biotrainee.com/thread-1853-1-1.html)
 >
-作业，看文章里的methods部分，把它用到的软件和参数摘抄下来，然后理解GEO/SRA数据库的数据存放形式，把规律和笔记发在论坛上面！优秀作业如下：
+>10、转录组入门(3)：了解fastq测序数据
 >
-[转录组入门（二）](http://www.biotrainee.com/thread-1829-1-1.html)作业 New(HOPTOP)
+>11、[转录组（三）](http://www.biotrainee.com/thread-1831-1-1.html)：（HOPTOP）
 >
-[转录组入门(2)](http://www.biotrainee.com/thread-1884-1-1.html)-作业(青山屋主)
+>12、[转录组入门(3)](http://www.biotrainee.com/thread-1885-1-1.html)-（青山屋主）
 >
-[PANDA姐的转录组入门(2)：读文章拿到测序数据](http://www.biotrainee.com/thread-1853-1-1.html)
+>13、[PANDA姐的转录组入门(3)](http://www.biotrainee.com/thread-1853-1-1.html):了解fastq测序数据
 >
-转录组入门(3)：了解fastq测序数据
+>转录组入门(4)：了解参考基因组及基因注释
 >
-需要用安装好的sratoolkit把sra文件转换为fastq格式的测序文件，并且用fastqc软件测试测序文件的质量！
-作业，理解测序reads，GC含量，质量值，接头，index，fastqc的全部报告，搜索中文教程，并发在论坛上面。
-目前优秀作业有：
+>14、hoptop的：[转录组作业（四）](http://www.biotrainee.com/thread-1835-1-1.html) 
 >
-[转录组（三）](http://www.biotrainee.com/thread-1831-1-1.html)：作业（HOPTOP）
+>转录组入门(5)： 序列比对
 >
-[转录组入门(3)](http://www.biotrainee.com/thread-1885-1-1.html)-作业（青山屋主）
+>15、转录组入门(5)](http://www.biotrainee.com/thread-1870-1-1.html)： 序列比对（HOPTOP）
 >
-[PANDA姐的转录组入门(3)](http://www.biotrainee.com/thread-1853-1-1.html):了解fastq测序数据
+>转录组入门(6)： reads计数
 >
-转录组入门(4)：了解参考基因组及基因注释
+>16、[生信媛](http://mp.weixin.qq.com/s?timestamp=1501374889&src=3&ver=1&signature=0c351NAHu7TpKP8LtF9u75FOYbue2YFdc5tA4sP7ynwVZDAmYIPPunqN0rsRhOp1colTo-sq8CU7QENCFmRHwaguaWIUo9hG*HuTSDLvdq-C0WpolbxUJRwo1vsf538PZhgc*7qm0nKpiqezChswNt9BFSRGYE0qGDGJipohsYM=)
 >
-在UCSC下载hg19参考基因组，我博客有详细说明，从gencode数据库下载基因注释文件，并且用IGV去查看你感兴趣的基因的结构，比如TP53,KRAS,EGFR等等。
+>转录组入门(7)： 差异基因分析
 >
-作业，截图几个基因的IGV可视化结构！还可以下载ENSEMBL，NCBI的gtf，也导入IGV看看，截图基因结构。了解IGV常识。
-目前优秀作业是：
+>17、[生信媛](http://mp.weixin.qq.com/s?timestamp=1501374889&src=3&ver=1&signature=0c351NAHu7TpKP8LtF9u75FOYbue2YFdc5tA4sP7ynwVZDAmYIPPunqN0rsRhOp1colTo-sq8CU7QENCFmRHwZ1ZQsmLXOXCs3Zu5GbbHEYS0yGWZQU9V35KHe6VwBGjyQnf7jCQiJn82AYGTlPRlwmTH-sMfRvt*2yGa3BBnNw=)
 >
-hoptop的：[转录组作业（四）](http://www.biotrainee.com/thread-1835-1-1.html) 
->
-转录组入门(5)： 序列比对
->
-比对软件很多，首先大家去收集一下，因为我们是带大家入门，请统一用hisat2，并且搞懂它的用法。
->
-直接去hisat2的主页下载index文件即可，然后把fastq格式的reads比对上去得到sam文件。
->
-接着用samtools把它转为bam文件，并且排序(注意N和P两种排序区别)索引好，载入IGV，再截图几个基因看看！
->
-顺便对bam文件进行简单QC，参考直播我的基因组系列。
-目前优秀作业是：
->
-[转录组入门(5)](http://www.biotrainee.com/thread-1870-1-1.html)： 序列比对（HOPTOP）
->
-转录组入门(6)： reads计数
->
-实现这个功能的软件也很多，还是烦请大家先自己搜索几个教程，入门请统一用htseq-count，对每个样本都会输出一个表达量文件。
->
-需要用脚本合并所有的样本为表达矩阵。参考：生信编程直播第四题：多个同样的行列式文件合并起来
->
-对这个表达矩阵可以自己简单在excel或者R里面摸索，求平均值，方差。
-看看一些生物学意义特殊的基因表现如何，比如GAPDH,β-ACTIN等等。
->
-转录组入门(7)： 差异基因分析
->
-这个步骤推荐在R里面做，载入表达矩阵，然后设置好分组信息，统一用DEseq2进行差异分析，当然也可以走走edgeR或者limma的voom流程。
-基本任务是得到差异分析结果，进阶任务是比较多个差异分析结果的异同点。
->
-转录组入门(8)： 差异基因结果注释
->
-我们统一选择p<0.05而且abs(logFC)大于一个与众的基因为显著差异表达基因集，对这个基因集用R包做KEGG/GO超几何分布检验分析。
-然后把表达矩阵和分组信息分别作出cls和gct文件，导入到GSEA软件分析。
->
-基本任务是完成这个分析。
->
-最后，把同样的代码实践与其它几篇转录组文章，并且把代码和分析结果发在论坛上面；
->
-http://biotrainee.com/jmzeng/RNA ... E81916-two-group.sh
->
-我以前在博客写过的
-http://www.bio-info-trainee.com/2218.html
-比如可以来一个实战：
-生信技能树»生信技能树›互动作业›项目实战›mRNA-seq数据分析实战
+>18、http://www.bio-info-trainee.com/2218.html
+
