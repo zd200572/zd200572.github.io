@@ -48,6 +48,8 @@ Lenovo-ThinkPad-E431
 
 `bash Miniconda3-latest-Linux-x86_64.sh`
 
+`source ~/.zshrc`
+
 一路Enter搞定
 
 2）sratoolkit
@@ -93,13 +95,13 @@ BioLinux自带了，升级一下到3.4.1
 
 `sudo add-apt-repository ppa:marutter/rrutter` 
 
-`sudo apt-get update ‘`
+`sudo apt-get update `
 
 `sudo apt-get install r-base r-base-dev` 
 
 8）rstudio
 
-`conda ``install` `rstudio`
+`conda install` `rstudio`
 
 `rstudio`
 
@@ -136,7 +138,7 @@ BioLinux自带了，升级一下到3.4.1
 
 ![](http://osnq2ssd7.bkt.clouddn.com/rnaseq1.png)
 
-![](http://osnq2ssd7.bkt.clouddn.com/rnaseq2.jpg)
+![](http://osnq2ssd7.bkt.clouddn.com/rnaseq22.png)
 
 ![](http://osnq2ssd7.bkt.clouddn.com/rnaseq3.png)
 ## 4、了解参考基因组及基因注释 ##
@@ -207,7 +209,7 @@ for i in `seq 56 58`
 do
     samtools view -S SRR35899${i}.sam -b > SRR35899${i}.bam
     samtools sort SRR35899${i}.bam SRR35899${i}_sorted.bam 
-    #这里我用的是0.1.19版本，不用加参 -o 	
+    #这里我用的是0.1.19版本，不用加参数 -o 	
     #ps:我加了-o之后重定向输出结果有5个G之工巨，xshell直接死机，直接运行，电脑终端一直不停跳乱码的东西。
     samtools index SRR35899${i}_sorted.bam
 done
@@ -426,3 +428,4 @@ summary(raw_count_filt)
 >
 >18、http://www.bio-info-trainee.com/2218.html
 
+  
