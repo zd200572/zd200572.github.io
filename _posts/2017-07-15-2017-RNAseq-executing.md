@@ -133,7 +133,16 @@ BioLinux自带了，升级一下到3.4.1
 `# multiqc`
 
 `multiqc *fastqc.zip --pdf`
-
+  ![](http://osnq2ssd7.bkt.clouddn.com/multiqc.png)
+![](http://osnq2ssd7.bkt.clouddn.com/multiqc1.png)
+![](http://osnq2ssd7.bkt.clouddn.com/multiqc2.png)
+![](http://osnq2ssd7.bkt.clouddn.com/multiqc3.png)
+![](http://osnq2ssd7.bkt.clouddn.com/multiqc4.png)
+![](http://osnq2ssd7.bkt.clouddn.com/multiqc4.png)
+![](http://osnq2ssd7.bkt.clouddn.com/multiqc5.png)
+![](http://osnq2ssd7.bkt.clouddn.com/multiqc6.png)
+![](http://osnq2ssd7.bkt.clouddn.com/multiqc7.png)
+![](http://osnq2ssd7.bkt.clouddn.com/multiqc8.png)
 学习笔记是纸质版拍照的，哈哈。
 
 ![](http://osnq2ssd7.bkt.clouddn.com/rnaseq1.png)
@@ -200,6 +209,16 @@ hisat2 -t -x reference/index/hg19/genome -1 RNA-Seq/SRR35899${i}_1.fastq.gz -2 S
 
 5.3 HISAT2输出结果
 
+  ![](http://osnq2ssd7.bkt.clouddn.com/histat.png)
+![](http://osnq2ssd7.bkt.clouddn.com/bidui_results.png)
+![](http://osnq2ssd7.bkt.clouddn.com/histat2-2.png)
+![](http://osnq2ssd7.bkt.clouddn.com/histat2-3.png)
+![](http://osnq2ssd7.bkt.clouddn.com/histat5.png)
+![两个同时跑，资源几乎占满。报错，改为硬件不足，后来才发现是硬盘爆了，于是上移动硬盘](http://osnq2ssd7.bkt.clouddn.com/htop.jpg)
+![](http://osnq2ssd7.bkt.clouddn.com/%E5%90%8C%E6%97%B6%E8%B7%91%E4%B8%A4%E4%B8%AA%E6%8A%A5%E9%94%99.png)
+>两个同时跑，资源几乎占满。报错，以为硬件不足，后来才发现是硬盘爆了，于是上移动硬盘。
+
+![](http://osnq2ssd7.bkt.clouddn.com/htop2.png)
 
 
 5.4 格式转换，排序，索引
@@ -214,6 +233,7 @@ do
     samtools index SRR35899${i}_sorted.bam
 done
 ```
+![](http://osnq2ssd7.bkt.clouddn.com/samtools-1.png)
 
 判断sam排序两种方式的不同：
 
@@ -223,12 +243,15 @@ samtools view -b  test.sam > test.bam
 samtools view test.bam | head
 ```
 
+
 默认排序
 
 ```shell
 samtools sort test.bam default
 samtools view default.bam | head
 ```
+
+![](http://osnq2ssd7.bkt.clouddn.com/samtools-2.png)
 
 Sort alignments by leftmost coordinates, or by read name when -n is used
 
@@ -237,17 +260,25 @@ samtools sort -n test.bam sort_left
 samtools view sort_left.bam | head
 ```
 
+![](http://osnq2ssd7.bkt.clouddn.com/samtools-3.png)
+
+
 5.5 samtools view
 
 **提取**1号染色体1234-123456区域的比对read
 
 `samtools view SRR3589957_sorted.bam chr1:1234-123456 | head	`
 
+![](http://osnq2ssd7.bkt.clouddn.com/samtools-5.png)
+  
 flagstat看下总体情况
 
 ```shell
 samtools flagstat SRR3589957_sorted.bam
 ```
+
+![](http://osnq2ssd7.bkt.clouddn.com/samtools-4.png)
+
 
 用samtools筛选恰好配对的read,就需要用0x10
 
@@ -255,6 +286,8 @@ samtools flagstat SRR3589957_sorted.bam
 samtools view -b -f 0x10 SRR3589957_sorted.bam chr1:1234-123456  > flag.bam
 samtools flagstat flag.bam
 ```
+
+![](http://osnq2ssd7.bkt.clouddn.com/samtools-6.png)
 
 5.6 比对质控(QC)
 
@@ -302,7 +335,8 @@ do
     htseq-count -s no -r pos -f bam RNA-Seq/aligned/SRR35899${i}_sorted.bam reference/gencode.v26lift37.annotation.sorted.gtf > RNA-Seq/matrix/SRR35899${i}.count 2> RNA-Seq/matrix/SRR35899${i}.log
 done
 ```
-
+  
+![](http://osnq2ssd7.bkt.clouddn.com/htseq.jpg)
 ## 合并表达矩阵
 
 在生信媛的python脚本上略做了修改
