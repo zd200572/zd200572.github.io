@@ -13,7 +13,7 @@ Hey，我是<strong>加栋(JD, zd200572)</strong>，生物工作者，在学Pyth
 
 工作、学习之余，我特别喜欢运动，远足、健身都是我特别喜欢的运动。
 
-
+E-mail:zd200572@163.com
 
 ![](http://osnq2ssd7.bkt.clouddn.com/IMG_20160604_152019.jpg)
 <center>我和我的老婆</center>
