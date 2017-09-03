@@ -1,0 +1,15 @@
+---
+layout:     post
+title:      我的2017书单2（持续更新中) 
+subtitle:   zd00572
+date:       2017-08-26
+author:     zd200572
+header-img: img/post-bg-universe.jpg
+catalog: true
+tags:
+    - 阅读
+    - Notes
+    
+---
+
+# 2017年已经过半，继续更新自己的书单 #
