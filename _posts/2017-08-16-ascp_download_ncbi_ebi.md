@@ -20,7 +20,7 @@ tags:
 
 ## ncbi ##
 
-    anonftp@ftp-private.ncbi.nlm.nih.gov://sra/sra-instant/reads/ByExp/sra/SRX/SRX248/SRX248556/SRR771547/SRR771547.sra
+    ascp -QT -l 6M -k1 -i asperaweb_id_dsa.openssh anonftp@ftp-private.ncbi.nlm.nih.gov://sra/sra-instant/reads/ByExp/sra/SRX/SRX248/SRX248556/SRR771547/SRR771547.sra
 
 下载速度真的真的好快！！！宽带满速是真的，这技术，比迅雷更牛呀！
 
