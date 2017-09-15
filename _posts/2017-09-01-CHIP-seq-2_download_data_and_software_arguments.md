@@ -40,6 +40,7 @@ tags:
    之前看jimmy大神使用shell 脚本下载的，我试着用python脚本搞定了。
 
    原理是相通的，只不过python还是间接使用shell，大概是多此一举，但我对python最熟了。优点是win下也可用，跨平台。代码周一补上。
+
     
     import os
     for  i in range(205, 210):
