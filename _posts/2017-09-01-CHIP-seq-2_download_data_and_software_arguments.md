@@ -41,13 +41,13 @@ tags:
 
    原理是相通的，只不过python还是间接使用shell，大概是多此一举，但我对python最熟了。优点是win下也可用，跨平台。代码周一补上。
 
-    
-    import os
-    for  i in range(205, 210):
-    	print(i)
-    	cmd = ' ascp -QT -l 100M -k1 -i asperaweb_id_dsa.openssh anonftp@ftp-private.ncbi.nlm.nih.gov:/sra/sra-instant/reads/ByStudy/sra/SRP/SRP017/SRP017311/SRR620' + '%s' % i +'/SRR620' + '%s.sra' % i + ' d:\\'
-    	print(cmd)
-    	os.system(cmd)​
+
+    `import os`
+    `for  i in range(205, 210):`
+    	`print(i)`
+    	`cmd = ' ascp -QT -l 100M -k1 -i asperaweb_id_dsa.openssh anonftp@ftp-private.ncbi.nlm.nih.gov:/sra/sra-instant/reads/ByStudy/sra/SRP/SRP017/SRP017311/SRR620' + '%s' % i +'/SRR620' + '%s.sra' % i + ' d:\\'`
+    	`print(cmd)`
+    	`os.system(cmd)​`
 
 2. 参数
 
