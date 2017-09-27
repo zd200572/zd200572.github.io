@@ -16,14 +16,19 @@ tags:
 
 我决定简单粗暴的上图片。
 
-![](http://osnq2ssd7.bkt.clouddn.com/%E6%AF%94%E8%BE%83%E8%A1%A8%E6%A0%BC.png)
+![](http://owxbk335s.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E4%BB%AA%E6%AF%94%E8%BE%83-.png)
 
-![](http://osnq2ssd7.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E4%BB%AA%E5%94%AE%E4%BB%B7.png)
 
-![](http://osnq2ssd7.bkt.clouddn.com/%E6%B5%8B%E5%BA%8Frun%E4%BA%A7%E5%87%BA.png)
+![](http://owxbk335s.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E6%9C%BA%E5%99%A8%E5%94%AE%E4%BB%B7.png)
 
-![](http://osnq2ssd7.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4.png)
+![](http://owxbk335s.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E6%97%B6%E9%97%B4.png)
 
-![](http://osnq2ssd7.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E6%88%90%E6%9C%AC.png)
+![](http://owxbk335s.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E6%88%90%E6%9C%AC.png)
 
 ![](http://osnq2ssd7.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E5%B9%B4%E6%95%B0%E6%8D%AE%E4%BA%A7%E5%87%BA.png)
+
+![](http://owxbk335s.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E9%94%99%E8%AF%AF%E7%8E%87.png)
+
+![](http://owxbk335s.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E8%AF%BB%E9%95%BF.png)
+
+![](http://owxbk335s.bkt.clouddn.com/%E6%B5%8B%E5%BA%8F%E6%AF%8Frun.png)
