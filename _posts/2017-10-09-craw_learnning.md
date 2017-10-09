@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      爬虫小试-0217影响因子表
+title:      爬虫小试-2017影响因子表
 subtitle:   zd00572
 date:       2017-10-09
 author:     zd200572
