@@ -80,7 +80,7 @@ make #提示说没有源码不需要编译于是尝试运行了一下，竟然�
 
 
 
-```
+```sh
 mkdir -p data reference 
 pirs simulate -i reference/chr1.fa \
 -s ~/biosofts/pirs/pIRS_111/Profiles/Base-Calling_Profiles/humNew.PE100.matrix.gz \
@@ -156,7 +156,7 @@ All done! Run time: 11248s.
 
 ### 2）真实的wes数据（不是必需）
 
-没看到在流程中用到，下下来以后备用，有100G之巨。
+没看到在流程中用到，下下来以后备用，有100G之巨。测试了一下，对于我的电脑配置，单单bwa比对运行要花100个小时。。。
 
 ```sh
 # ~100GB disk space required to download the NA12878
@@ -188,7 +188,7 @@ picard CreateSequenceDictionary.jar R=hg38.fasta O=hg38.dict
 
 ### 5）其他参考数据
 
-```
+```sh
 # dbSNP138
  wget http://hgdownload.cse.ucsc.edu/goldenPath/hg38/database/snp150.txt.gz
 
@@ -204,6 +204,16 @@ curl --remote-name ${GATK_FTP}/${f}
 done
 ```
 
+# 二、软件运行
+
+## 1.bwa比对
+
+由于对于一个软件来说，功能太多，不可能一一覆盖，于是，我就先学习这次用到的参数，顺便对软件做一个大概了解，由于是初学，目标先定低一点，先了解大概，以后做项目再一一学习。
+
+bwa的mem参数：MEM是bwa中最新的算法，基本取代了前两种，目的是将测序reads或组装的contig比对到Reference上。（Bio-Xin博客：http://www.cnblogs.com/leezx/p/6226717.html）
+
+-t参数，线程数；-R参数：设置reads标头，“\t”分割；M——将较短的split hits标记为secondary，与picard兼容；后边跟参考基因组、reads文件和>以及要生成的sam文件。（如果GATK call SNP 必须用-r 参数）
+
 ```sh
 R1=/mnt/A_100_500_1.fq.gz
 R2=/mnt/A_100_500_2.fq.gz
@@ -214,16 +224,23 @@ Real time: 457.713 sec; CPU: 1489.602 sec
  Real time: 12440.568 sec; CPU: 43493.514 sec #50x
 ```
 
+## 2.picard
+
+### 1）SortSam工具
+
+由BWA生成的sam文件时按字典式排序法进行的排序（lexicographically）进行排序的（chr10，chr11…chr19，chr1，chr20…chr22，chr2，chr3…chrM，chrX，chrY），但是GATK在进行callsnp的时候是按照染色体组型（karyotypic）进行的（chrM，chr1，chr2…chr22，chrX，chrY），因此要对原始sam文件进行reorder。可以使用picard-tools中的ReorderSam完成，同时格式转换成了bam。（https://www.plob.org/article/7009.html）
+
 ```sh
 picard SortSam CREATE_INDEX=True SORT_ORDER=coordinate VALIDATION_STRINGENCY=LENIENT INPUT=A.chr1.sam OUTPUT=A.chr1.sort.bam
 #2x运行情况 
 picard.sam.SortSam done. Elapsed time: 4.54 minutes.
 Runtime.totalMemory()=872415232
 #50x
-
 ```
 
- 
+ ### 2）MarkDuplicates工具
+
+过量扩增的reads并不是基因组自身固有序列，不能作为变异检测的证据，因此，要尽量去除这些由PCR扩增所形成的duplicates，这一步可以使用picard-tools来完成。去重复的过程是给这些序列设置一个flag以标志它们，方便GATK的识别。还可以设置 REMOVE_DUPLICATES=true 来丢弃duplicated序列。对于是否选择标记或者删除，对结果应该没有什么影响，GATK官方流程里面给出的例子是仅做标记不删除。这里定义的重复序列是这样的：如果两条reads具有相同的长度而且比对到了基因组的同一位置，那么就认为这样的reads是由PCR扩增而来，就会被GATK标记。
 
 ```sh
 picard MarkDuplicates CREATE_INDEX=true REMOVE_DUPLICATES=True ASSUME_SORTED=True VALIDATION_STRINGENCY=LENIENT METRICS_FILE=/dev/null INPUT=A.chr1.sort.bam OUTPUT=A.chr1.sort.dedup.bam
@@ -231,6 +248,8 @@ picard MarkDuplicates CREATE_INDEX=true REMOVE_DUPLICATES=True ASSUME_SORTED=Tru
 picard.sam.markduplicates.MarkDuplicates done. Elapsed time: 5.15 minutes.
 Runtime.totalMemory()=822083584
 ```
+
+### 3）FixMateInformation
 
 
 
