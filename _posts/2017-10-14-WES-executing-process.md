@@ -60,10 +60,6 @@ brew install zlib
 brew install boost
 ```
 
-
-
-
-
 然后是pirs这个软件的安装：
 
 大概我只是按步骤装了下就可以用了，中间有点报错，是sh文件里有个路径错误，我还以为是软件的严重错误。
@@ -78,8 +74,6 @@ cd pIRS_111/
 make #提示说没有源码不需要编译于是尝试运行了一下，竟然可以运行。
 ```
 
-
-
 ```sh
 mkdir -p data reference 
 pirs simulate -i reference/chr1.fa \
@@ -91,7 +85,23 @@ pirs simulate -i reference/chr1.fa \
 
 pirs软件参数学习：
 
+simulate：模拟illumina reads数据
 
+-i：参考基因组序列
+
+-s <double> 杂合 SNP rate (default=0.001)
+
+-d <double> GC内容覆盖深度？
+
+ -b <string> input InDel-error profile,input InDel-error profile for simulating InDel-error of reads, (default=(exe_path)/Profiles/InDel_Profiles/phixv2.InDel.matrix)
+
+-l:read读长
+
+-x:测序覆盖深度，默认5
+
+-Q:33/64
+
+-o <string> output prefix (default=Illumina)
 
 ```shell
 #程序运行过程：
@@ -167,7 +177,7 @@ wget [url]ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR262/ERR262997/ERR262997_2.fastq.
 
 ### 3）参考基因组
 
-```
+```sh
 cd reference
 wget http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.chromFa.tar.gz
 tar zxvf hg38.chromFa.tar.gz
@@ -251,7 +261,7 @@ Runtime.totalMemory()=822083584
 
 ### 3）FixMateInformation
 
-
+这一步骤在网上搜到了这个。。。（看来我得好好理出一个现在使用的流程来，生物信息的流程发展还真是快呀！）在一些老版本的pipeline中(如seqanswers上的那个)，这一步做完后还要对pair-end数据的mate information进行fix。不过新版本已经不需要这一步了，Indel realign可以自己fix mate。（http://www.bbioo.com/lifesciences/40-115982-1.html）
 
 ```sh
 picard FixMateInformation SO=coordinate VALIDATION_STRINGENCY=LENIENT CREATE_INDEX=true INPUT=A.chr1.sort.dedup.bam OUTPUT=A.chr1.sort.dedup.mate.bam
@@ -259,6 +269,82 @@ picard FixMateInformation SO=coordinate VALIDATION_STRINGENCY=LENIENT CREATE_IND
 picard.sam.FixMateInformation done. Elapsed time: 6.36 minutes.
 Runtime.totalMemory()=877658112
 ```
+
+## 3.gatk
+
+终于到了大头gatk出场了，我表示我对它好陌生，几乎是第一次运行它。通过上面可以看出他是一个经常更新的程序，而且它虽然是一个java程序，但是它有好几个子工具，就像上面的picard。先看看它的流程，官方的：
+
+![https://software.broadinstitute.org/gatk/img/BP_workflow_3.6.png](https://software.broadinstitute.org/gatk/img/BP_workflow_3.6.png)
+
+### 1)RealignerTargetCreator
+
+对INDEL周围进行realignment，这个操作有两个步骤，第一步生成需要进行realignment的位置的信息, 输出一个包含着possible indels的文件。
+
+```sh
+GenomeAnalysisTK -R reference/chr1.fa \
+-T RealignerTargetCreator \
+-I A.chr1.sort.dedup.mate.bam -o A.intervals
+```
+
+### 2)IndelRealigner
+
+第二步才是对这些位置进行realignment, 最后生成一个realin好的BAM文件sample.realn.bam
+
+```sh
+GenomeAnalysisTK -R reference/chr1.fa \
+-T IndelRealigner \
+-targetIntervals A.intervals \
+-I A.chr1.sort.dedup.mate.bam -o A.chr1.sort.dedup.mate.relaign.bam
+```
+
+### 3)BaseRecalibrator
+
+（对base的quality score进行校正）碱基质量分数重校准（Base quality score recalibration，BQSR)，就是利用机器学习的方式调整原始碱基的质量分数。它分为两个步骤:
+
+1. 利用已有的snp数据库，建立相关性模型，产生重校准表( recalibration table)
+
+2. 根据这个模型对原始碱基进行调整，只会调整非已知SNP区域。
+
+   （参考自生信媛--GATK之BaseRecalibrator）
+
+```sh
+GenomeAnalysisTK -R reference/chr1.fa \
+-T BaseRecalibrator \
+-knownSites $DATA/dbsnp_138.hg19.vcf \
+-o A.recal \
+-I A.chr1.sort.dedup.mate.relaign.bam
+```
+
+### 4）UnifiedGenotyper
+
+这一步提示jimmy的代码不能用了，说3.7以后采用了新的参数，更新好快。
+
+使用`UnifiedGenotyper`寻找variant。论坛搜索发现，现在推荐用`HaplotypeCaller`，效果更好。
+
+```sh
+GenomeAnalysisTK -T UnifiedGenotyper -R chr1.fa -I A.chr1.sort.dedup.mate.relaign.recal.bam --dbsnp ../common_all_20170710.vcf -o snps.raw.vcf -stand_call_conf 50.0
+```
+
+### 5）HaplotypeCaller
+
+同样是更新了的参数处理方式。
+
+> 由于**HaplotypeCaller**的工作原理，直接省去了BQSR和indel realignment步骤，所以对于一个variant calling流程而言，可以直接比对，去重复后运行**HaplotypeCaller**。
+>
+> HaplotypeCaller，简称HC，能过通过对活跃区域（也就是与参考基因组不同处较多的区域）局部重组装，同时寻找SNP和INDEL。换句话说，当HC看到一个地方好活跃呀，他就不管之前的比对结果了，直接对这个地方进行重新组装，所以就比传统的基于位置（position-based)的工具，如前任UnifiedGenotyper好用多了。
+>
+> HC可以处理非二倍体物种和混池实验数据，但是不推荐用于癌症或者体细胞。
+> HC还可以正确处理可变剪切，所以也能用于RNA-Seq数据。
+>
+> 参考自生信媛--生信媛的GATK大礼包 
+
+> ```sh
+> GenomeAnalysisTK -R chr1.fa -T HaplotypeCaller --dbsnp ../common_all_20170710.vcf -stand_call_conf 30 -o A.hc.vcf -I A.chr1.sort.dedup.mate.relaign.recal.bam
+> ```
+
+# 4.总结
+
+虽然马马虎虎走了一次最基本的几个步骤，发现学习之路任重而道远呀！我只是个初学者，加油！
 
 
 
