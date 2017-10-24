@@ -86,7 +86,7 @@ service-worker: true
 
 
 # Friends
-我膜拜的大神们: [
+friends: [
     {
          title: "生信菜鸟团",
          href: "http://www.bio-info-trainee.com/"
