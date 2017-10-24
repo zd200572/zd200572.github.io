@@ -86,39 +86,39 @@ service-worker: true
 
 
 # Friends
-friends: [
+我膜拜的大神们: [
     {
-    #     title: "Su",
-    #     href: "http://su.gallery/"
-    # },{
-        title: "乱序",
-        href: "http://mida.re/"
+         title: "生信菜鸟团",
+         href: "http://www.bio-info-trainee.com/"
+     },{
+        title: "生信客部落",
+        href: "http://www.bio-info-club.com/"
     },{
-        title: "前端外刊评论",
-        href: "http://qianduan.guru/"
+        title: "rabbit gao's blog",
+        href: "http://www.iwhgao.com/"
     },{
-        title: "天镶的博客",
-        href: "http://lingyu.wang/"
+        title: "沈梦圆博客",
+        href: "http://shemy.site/"
     },{
-        title: "Luke 的自留地",
-        href: "http://hmqk1995.github.io"
+        title: "徐洲更简书",
+        href: "http://www.jianshu.com/u/9ea40b5f607a"
     },{
-        title: "Ebn's Blog",
-        href: "http://ebnbin.com/"
+        title: "会思考的熊",
+        href: "http://kaopubear.top/"
     },{
-        title: "SmdCn's Blog",
-        href: "http://blog.smdcn.net"
+        title: "生物日志|鸣一道 ",
+        href: "http://www.zilhua.com/"
     },{
-        title: "解旻的博客",
-        href: "http://xieminis.me/"
+        title: "hope博客",
+        href: "http://tiramisutes.github.io/"
     },{
-        title: "DHong Say",
-        href: "http://dhong.co"
+        title: "陈连福博客",
+        href: "http://www.chenlianfu.com/"
     },{
-        title: "尹峰以为",
-        href: "http://ingf.github.io/"
+        title: "铁汉1990",
+        href: "http://blog.sina.com.cn/tiehan1990"
     },{
-        title: "前端神盾局",
-        href: "http://wepiaofei.github.io/blog/"
+        title: "biochen生物",
+        href: "http://blog.biochen.com/"
     }
 ]
