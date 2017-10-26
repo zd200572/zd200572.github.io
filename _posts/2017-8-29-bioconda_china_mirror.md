@@ -1,13 +1,16 @@
 ---
-ID: 58
-post_title: ""
-author: zd200572
-post_excerpt: ""
-layout: post
-permalink: >
-  http://qxu1141810006.my3w.com/2017/10/26/58/
-published: true
-post_date: 2017-10-26 12:41:29
+layout:     post
+title:      七夕刚过，bioconda中国镜像来临
+subtitle:   zd00572
+date:       2017-08-29
+author:     zd200572
+header-img: img/post-bg-rwd.jpg
+catalog: true
+tags:
+    - 健康
+    - 互联网+
+    - 医疗
+    - 大数据
 ---
 **昨天，偶然发现：**
 
@@ -28,3 +31,5 @@ post_date: 2017-10-26 12:41:29
 使用镜像情况，平均速度已经是1.86MB/s，整整提高了十倍，虽然可能还没有进入官方源，有个警告，但是不影响使用。我们可以把更多的时间用在分析数据而不是折腾软件上。
 
 **怎么样，给力吧？快点上车吧！**
+
+
