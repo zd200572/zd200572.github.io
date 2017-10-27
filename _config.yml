@@ -1,10 +1,10 @@
 # Site settings
-title: JD Blog
-SEOTitle: 加栋的博客 | JD Blog
+title: 赵加栋的个人博客
+SEOTitle: 赵加栋的个人博客
 header-img: img/post-bg-unix-linux.jpg
 email: zd200572@gmail.com
-description: "关于科技，生物信息与环保 | 加栋，Web & Mobile Lover，Front-End Engineer，UX Designer | 这里是 @JD加栋 的个人博客，与你一起发现更大的世界。"
-keyword: "加栋, JD加栋, JD, zd200572, @zd200572, 加栋的博客, JD Blog, 博客, 个人网站, 互联网, 前端, 设计, 产品"
+description: "关于科技，生物信息与环保 | 赵加栋，Web & Bioinformatics Lover，Microbiome Engineer | 这里是 @zd200572 的个人博客，与你一起发现更大的世界。"
+keyword: "加栋, JD加栋, JD, zd200572, @zd200572, 赵加栋的博客, 博客, 个人网站, 互联网, 微生物, 生物信息, Python"
 url: "https://zd200572.com"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
