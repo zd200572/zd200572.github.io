@@ -12,13 +12,13 @@ tags:
     - gatk
     - Notes
 ---
-`[GATK中文社区](https://www.gatk.com.cn)`
+[GATK中文社区](https://www.gatk.com.cn)
 
-`[gatk-chinese github](https://github.com/gatk-chinese)`
+[gatk-chinese github](https://github.com/gatk-chinese)
 
-`[生信技能树](http://www.biotrainee.com)`
+[生信技能树](http://www.biotrainee.com)
 
-`**有幸参加gatk中文文档的翻译工作，感觉还是好自豪的，虽然我还不是生信从业者，可以以这样的方式为这个行业做点事情，这就是动力！感谢jimmy和生信技能树！这是第一篇：**`
+**有幸参加gatk中文文档的翻译工作，感觉还是好自豪的，虽然我还不是生信从业者，可以以这样的方式为这个行业做点事情，这就是动力！感谢jimmy和生信技能树！这是第一篇：**
 
 原文链接  ： [[ What's in the resource bundle and how can I get it?](https://software.broadinstitute.org/gatk/documentation/article?id=1213)](https://software.broadinstitute.org/gatk/documentation/article?id=1213)
 
