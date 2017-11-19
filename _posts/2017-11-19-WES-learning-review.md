@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      WES学习内容列表
+title:      学习内容列表
 subtitle:   感谢各位知识分享者的辛苦劳动
 date:       2017-11-19
 author:     zd200572
