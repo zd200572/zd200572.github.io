@@ -2,7 +2,7 @@
 layout:     post
 title:      2017书单4
 subtitle:   我的读书清单
-date:       2017-10-12
+date:       2017-11-19
 author:     zd200572
 header-img: img/post-bg-rwd.jpg
 catalog: true
