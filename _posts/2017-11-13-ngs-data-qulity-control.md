@@ -14,7 +14,7 @@ tags:
 
 # 质控学习笔记
 
-##1.初识质控的重要性
+#1.初识质控的重要性
 
 搞了一堆测序数据，往程序一丢，以为就是生信的分析过程，真正的是要理解每个工具有作用，去根据真正的情况实现正确的处理。拿到一堆数据忙乱如麻大概就是我等小白的水平了，还好有大神的文章引路。
 
@@ -24,15 +24,15 @@ tags:
 >
 >### NGS测序数据的*质量*控制 (*Quality* Control,QC)--[生信媛](http://mp.weixin.qq.com/profile?src=3&timestamp=1510558460&ver=1&signature=TtT-Ig9-yaFMI*nR8sHXUak*pl3UBhJlGZNQbJc*ybFx1hRx9wSMvzKS4rkKVYbfYL4TCvAVbS*uNNukOSHDVw==)
 
-### 2.我的质控探索
+# 2.我的质控探索
 
-1）先看看这惨不忍睹的测序数据：
+## 1）先看看这惨不忍睹的测序数据：
 
 ![](http://owxbk335s.bkt.clouddn.com/qc-raw.png)
 
 190以后就低于q20了，2*300PE。
 
-2）Q20过滤一下
+## 2）Q20过滤一下
 
 ```sh
 trimmomatic SE ../HLA-1_S82_L001_R1_001.fastq HLA-1-1.fastq AVGQUAL:20
@@ -56,7 +56,7 @@ trimmomatic SE ../HLA-1_S82_L001_R1_001.fastq HLA-1-2.fastq TRAILING:20 MINLEN:1
 
 依然没有什么效果呢。
 
-3）滑窗的方法过滤：
+## 3）滑窗的方法过滤：
 
 ```sh
 trimmomatic SE ../HLA-1_S82_L001_R1_001.fastq HLA-1-3.fastq SLIDINGWINDOW:3:20 MINLEN:150
