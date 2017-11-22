@@ -18,7 +18,9 @@ tags:
 
 ```R
 install.packages("devtools")
+
 library(devtools)
+
 install_github("GuangchuangYu/yyplot")
 ```
 
@@ -28,7 +30,9 @@ bioconductor中科大源的使用：
 
 ```R
 source("https://bioconductor.org/biocLite.R")
+
 options(BioC_mirror="http://mirrors.ustc.edu.cn/bioc/") 
+
 biocLite("magick")
 ```
 
@@ -49,11 +53,22 @@ biocLite("magick")
 ```R
 #用作者的示例加上我研究生阶段的课题
 library(yyplot)
+
 term <- c('"thiobencarb"')
+
 pm <- pubmed_trend(term, year=2001:2017)
+
 plot(pm)
 ```
 
 ![](http://owxbk335s.bkt.clouddn.com/thiobencarb.png)
 
 课题不是怎么热哈！
+
+**版权属于作者（ *Y叔* [biobabble](https://mp.weixin.qq.com/s?src=11&timestamp=1511326740&ver=529&signature=r3*GLbWm4nQzzJgEfW8am83nHCJXV2DWP0p6i6ZiPWATEXHNm5LQuWetgR6Ir0t0GH9yuGX4hq6vH5C-By9gY*o5QJx0Wie6bGDwF-IG9m-d2DlQfnCSHDnFsoq19Cw*&new=1##)），我只是个使用者，为了尊重作者，放上他的微信公众号二维码。**
+
+![](http://owxbk335s.bkt.clouddn.com/biobable)
+
+
+
+我的个人博客：[http://blog.zd200572.com](http://blog.zd200572.com/)和[www.zd200572.com](http://www.zd200572.com/)
