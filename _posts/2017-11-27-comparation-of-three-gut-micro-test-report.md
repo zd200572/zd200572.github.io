@@ -1,7 +1,7 @@
 layout:     post
-title:      3个肠道微生物检测报告的对比
-subtitle:   你有兴趣做肠道微生物检测吗？
-date:       2017-11-27
+title:     3个肠道微生物检测报告的对比
+subtitle:     你有兴趣做肠道微生物检测吗？
+date:     2017-11-27
 author:     zd200572
 header-img: img/post-bg-rwd.jpg
 catalog: true
@@ -39,12 +39,6 @@ tags:
 ![](http://owxbk335s.bkt.clouddn.com/gut-report1.png)
 
 # 3.2肠道致病菌 
-
-| 报告单位 | 致病菌检测项目                    |
-| ---- | -------------------------- |
-| 微健康  | 无                          |
-| 台湾   | 金黄色葡萄球菌，只列了一项，可能只是示例       |
-| 谷禾   | 幽门螺旋杆菌、艰难梭菌、沙门氏菌、志贺氏菌、弯曲杆菌 |
 
 #   3.3 益生菌
 
