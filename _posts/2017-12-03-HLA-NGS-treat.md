@@ -183,7 +183,7 @@ L	Not typed	Not typed
 
 # 3.其他的软件
 
-还有一个**HLAssign**，可以可视化比对，然后手动判读，有windows版本，这个门槛低，赞一个，但是需要四核心，8g以上内存，但是现在电脑主流也可以达到了哈。放上官网地址：http://www.ikmb.uni-kiel.de/resources/download-tools/software/hlassign
+还有一个**HLAssign**，可以可视化比对，然后手动判读，有windows版本，这个门槛低，赞一个，但是需要四核心，8g以上内存，但是现在电脑主流也可以达到了哈。放上官网地址：http://www.ikmb.uni-kiel.de/resources/download-tools/software/hlassign。但是，由于我的测序数据真的是太差了，比对虽然只需要几秒，却一个分型结果也没有，或许与没有认真看文档有关。
 
 
 
@@ -194,3 +194,5 @@ L	Not typed	Not typed
 还有是**optiType**，一个德国教授写的软件，只对classI分型，也是docker，却也没有运行成功。。。报错找不到文件，或许读读文章可以找到答案，还可以试试源码安装。
 
 最后是**HLA-PRG-LA**，号称很消耗硬件的，找了一个docker也没有运行成功。。。还有其他的，看文章里都说正确率不好，就没尝试了。
+
+我的个人博客：[http://blog.zd200572.com](http://blog.zd200572.com/)和[www.zd200572.com](http://www.zd200572.com/)
