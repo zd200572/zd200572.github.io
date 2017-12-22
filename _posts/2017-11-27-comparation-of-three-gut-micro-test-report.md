@@ -1,5 +1,5 @@
 ---
-AKK菌layout:     post
+layout:     post
 title:      3个肠道微生物检测报告的对比
 subtitle:   你有兴趣做肠道微生物检测吗？
 date:       2017-11-27

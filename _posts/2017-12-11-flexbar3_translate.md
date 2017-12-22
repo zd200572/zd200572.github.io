@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      [译]flexbar3.0--单指令多数据（SIMD）和多核并行
+title:      (译)flexbar3.0--单指令多数据（SIMD）和多核并行
 subtitle:   NGS学习笔记
 date:       2017-12-21
 author:     zd200572
@@ -8,9 +8,10 @@ header-img: img/post-bg-universe.jpg
 catalog: true
 tags:
     - NGS质控
+
 ---
 
-高通量测序仪可以一次运行处理多个样品。 对于Illumina系统中，测序reads分别用额外的DNA标签（barcode）标记。 因此条形码和接头序列的识别在下一代测序数据的分析中通常是需要的。 Flexbar根据barcode进行样本测序数据的修剪和分离。 现代测序仪上生成大量数据要求这个预处理尽可能地高效完成。
+文章原文：https://www.ncbi.nlm.nih.gov/pubmed/28541403
 
 # 1.摘要
 
