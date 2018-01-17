@@ -1,13 +1,13 @@
 ---
 layout:     post
 title:      omictools的HLA分型软件爬取
-subtitle:   rest学习笔记
+subtitle:   rvest学习笔记
 date:       2018-01-14
 author:     zd200572
 header-img: img/post-bg-universe.jpg
 catalog: true
 tags:
-    - rest
+    - rvest
 
 ---
 
