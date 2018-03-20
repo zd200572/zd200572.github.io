@@ -2,7 +2,7 @@
 layout:     post
 title:      mongodb安装笔记（windows、Mac 10.9和linux）
 subtitle:   微生物学习笔记
-date:       2018-02-09
+date:       2018-03-19
 author:     zd200572
 header-img: img/post-bg-alitrip.jpg
 catalog: true
